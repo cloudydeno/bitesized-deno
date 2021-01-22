@@ -1,4 +1,5 @@
-import * as JWT from "https://deno.land/x/djwt@v2.1/mod.ts";
+// import * as JWT from "https://deno.land/x/djwt@v2.1/mod.ts";
+import * as JWT from "https://raw.githubusercontent.com/cloudydeno/djwt/patch-1/mod.ts";
 
 export class ServiceAccount {
   constructor(
