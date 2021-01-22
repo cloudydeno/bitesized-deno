@@ -10,15 +10,24 @@ export class ServiceAccount {
     return this.credential.project_id;
   }
 
+  // You have a choice of async or sync loading for the file.
+  // Async is generally better but ServiceAccounts are often configured in constructors.
+  // That's a good time to use the ...Sync version since JS constructors can't be async.
   static async readFromFile(path: string): Promise<ServiceAccount> {
     const rawFile = await Deno.readTextFile(path);
-    if (rawFile[0] !== '{') throw new Error(
-      `The file at ${JSON.stringify(path)} doesn't look like a JSON document`);
+    return this.loadFromJsonString(rawFile, `The file at ${JSON.stringify(path)}`);
+  }
+  static readFromFileSync(path: string): ServiceAccount {
+    const rawFile = Deno.readTextFileSync(path);
+    return this.loadFromJsonString(rawFile, `The file at ${JSON.stringify(path)}`);
+  }
+  static loadFromJsonString(jsonData: string, origin = 'The given service account'): ServiceAccount {
+    if (jsonData[0] !== '{') throw new Error(
+      `${origin} doesn't look like a JSON document`);
+    const accountInfo: ServiceAccountCredential = JSON.parse(jsonData);
 
-    const accountInfo: ServiceAccountCredential = JSON.parse(rawFile);
     if (accountInfo.type !== 'service_account') throw new Error(
-      `The file at ${JSON.stringify(path)} doesn't look like a service_account`);
-
+      `${origin} doesn't look like a service_account`);
     return new ServiceAccount(accountInfo);
   }
 
