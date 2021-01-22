@@ -1,11 +1,14 @@
-//import * as JWT from "https://deno.land/x/djwt@v1.9/mod.ts";
-import * as JWT from "https://raw.githubusercontent.com/danopia/djwt/patch-1/mod.ts";
+import * as JWT from "https://deno.land/x/djwt@v2.1/mod.ts";
 
 export class ServiceAccount {
   constructor(
     private credential: ServiceAccountCredential,
   ) {}
   #privateKey = this.credential.private_key;
+
+  get projectId() {
+    return this.credential.project_id;
+  }
 
   static async readFromFile(path: string): Promise<ServiceAccount> {
     const rawFile = await Deno.readTextFile(path);
