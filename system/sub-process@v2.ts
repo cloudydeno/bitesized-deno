@@ -1,4 +1,5 @@
 // Intended to be useful for piping together processes like in a Unix shell
+import { readAll, writeAll } from "https://deno.land/std@0.95.0/io/util.ts";
 
 export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
   constructor(
@@ -18,8 +19,7 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
       env: {...this.opts.env, 'NO_COLOR': 'yas'},
     });
     this.#stdin = this.proc.stdin;
-    this.#stderrText = Deno
-      .readAll(this.proc.stderr)
+    this.#stderrText = readAll(this.proc.stderr)
       .then(raw => {
         if (raw.length == 0) return [];
         const lines = new TextDecoder().decode(raw).split('\n');
@@ -62,7 +62,7 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
     this.#stdin = null;
 
     const bytes = new TextEncoder().encode(text);
-    await Deno.writeAll(stdin, bytes);
+    await writeAll(stdin, bytes);
     stdin.close();
   }
   async pipeInputFrom(source: SubProcess) {
@@ -80,7 +80,7 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
 
   async captureAllOutput() {
     const [data] = await Promise.all([
-      Deno.readAll(this.proc.stdout),
+      readAll(this.proc.stdout),
       this.status(),
     ]);
     return data;
