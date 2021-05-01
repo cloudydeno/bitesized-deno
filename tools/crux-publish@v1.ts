@@ -13,7 +13,7 @@ if (Deno.args.length < 1) {
   Deno.exit(4);
 }
 
-let modules = new Array<{ path: string; url: string }>();
+let modules = new Array<{ path: string; url: string; fragment: string }>();
 for await (
   const file of walk(Deno.args[0], {
     includeDirs: false,
@@ -33,7 +33,8 @@ for await (
     const { id, comment } = await uploadFile(file.name, data);
     modules.push({
       path: file.path,
-      url: `${serverOrigin}/${id}#${file.name.replace(/\.ts$/, "")}`,
+      url: `${serverOrigin}/${id}`,
+      fragment: file.name.replace(/\.ts$/, ""),
     });
     await writeProgress(`${serverOrigin}/${id} ${comment}`.trimRight());
   } finally {
@@ -51,7 +52,9 @@ if (Deno.args.includes("--update-readme")) {
       [
         `| Module | Permanent URL |`,
         `|---|---|`,
-        ...modules.map((x) => `| \`${x.path}\` | ${x.url} |`),
+        ...modules.map((x) =>
+          `| \`${x.path}\` | [${x.url}](${x.url}#${x.fragment}) |`
+        ),
       ].join("\n"),
     );
 
