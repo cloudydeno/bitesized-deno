@@ -1,4 +1,5 @@
 // Intended to be useful for piping together processes like in a Unix shell
+
 import { readAll, writeAll } from "https://deno.land/std@0.95.0/io/util.ts";
 
 export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
@@ -12,12 +13,17 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
       stdin: Tstdin;
     },
   ) {
-    this.proc = Deno.run({
-      stdout: 'piped',
-      stderr: 'piped',
-      ...this.opts,
-      env: {...this.opts.env, 'NO_COLOR': 'yas'},
-    });
+    try {
+      this.proc = Deno.run({
+        stdout: 'piped',
+        stderr: 'piped',
+        ...this.opts,
+      });
+    } catch (error) {
+      throw attachErrorData(error, this, -1,
+        `Child process failed to launch: ${error.message}`);
+    }
+
     this.#stdin = this.proc.stdin;
     this.#stderrText = readAll(this.proc.stderr)
       .then(raw => {
@@ -29,7 +35,6 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
         }
         return lines;
       });
-
   }
   proc: Deno.Process<{ cmd: string[]; stdin: Tstdin; stdout: "piped"; stderr: "piped"; }>;
   #stdin: (Deno.Writer & Deno.Closer) | null;
@@ -42,16 +47,8 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
     ]);
     if (status.code !== 0) {
       const errorText = stderr.find(x => x.match(this.opts.errorPrefix));
-
       const error = new Error(`Subprocess "${this.label}" (${this.opts.cmd.join(' ')}) failed with ${errorText || `exit code ${status.code}. Sorry about that.`}`);
-
-      (error as SubprocessError).subproc = {
-        procLabel: this.label,
-        cmdLine: this.opts.cmd,
-        exitCode: status.code,
-        foundError: errorText,
-      };
-      throw error;
+      throw attachErrorData(error, this, status.code, errorText);
     }
     return stderr;
   }
@@ -113,4 +110,12 @@ export interface SubprocessErrorData {
   cmdLine: string[];
   exitCode: number;
   foundError?: string;
+}
+function attachErrorData(error: unknown, proc: SubProcess, exitCode: number, foundError?: string) {
+  (error as SubprocessError).subproc = {
+    procLabel: proc.label,
+    cmdLine: proc.opts.cmd,
+    exitCode, foundError,
+  };
+  return error;
 }
