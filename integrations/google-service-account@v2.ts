@@ -3,8 +3,10 @@ import * as JWT from "https://deno.land/x/djwt@v2.2/mod.ts";
 export class ServiceAccount {
   constructor(
     private credential: ServiceAccountCredential,
-  ) {}
-  #privateKey = this.credential.private_key;
+  ) {
+    this.#privateKey = this.credential.private_key;
+  }
+  #privateKey: string;
 
   get projectId() {
     return this.credential.project_id;
