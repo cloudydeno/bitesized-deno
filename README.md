@@ -1,5 +1,9 @@
-# deno-bitesized
-A collection of individual, unrelated, low movement TypeScript modules
+# deno-bitesized [![CI](https://github.com/cloudydeno/deno-bitesized/actions/workflows/deno-ci.yml/badge.svg)](https://github.com/cloudydeno/deno-bitesized/actions/workflows/deno-ci.yml)
+A collection of individual, unrelated, low movement TypeScript modules.
+
+To reliably import a module from this repository, copy the link target from the below table.
+These [crux.land](https://crux.land) links are hash-based, so the returned modules will "never" change.
+Any future versions will be assigned a new URL.
 
 | Module | Permanent URL |
 |---|---|
@@ -14,3 +18,5 @@ A collection of individual, unrelated, low movement TypeScript modules
 | `logic/terminal-input@v1.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input@v1) |
 | `logic/factory-map@v1.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map@v1) |
 | `tools/crux-publish@v1.ts` | [https://crux.land/5CjFpG](https://crux.land/5CjFpG#crux-publish@v1) |
+
+The above table is automatically updated by Github Actions after typechecking passes with multiple Deno releases.
