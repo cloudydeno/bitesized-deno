@@ -33,7 +33,7 @@ for await (
     const { id, comment } = await uploadFile(file.name, data);
     modules.push({
       path: file.path,
-      url: `${serverOrigin}/${id}#${file.name}`,
+      url: `${serverOrigin}/${id}#${file.name.replace(/\.ts$/, "")}`,
     });
     await writeProgress(`${serverOrigin}/${id} ${comment}`.trimRight());
   } finally {
