@@ -9,6 +9,7 @@ Any future versions will be assigned a new URL.
 |---|---|
 | `system/sub-process@v2.ts` | [https://crux.land/454pqj](https://crux.land/454pqj#sub-process@v2) |
 | `formatting/filesize@v1.ts` | [https://crux.land/6wZ5Sz](https://crux.land/6wZ5Sz#filesize@v1) |
+| `formatting/ini@v1.ts` | [https://crux.land/6mMyhY](https://crux.land/6mMyhY#ini@v1) |
 | `integrations/google-service-account@v2.ts` | [https://crux.land/5D1UrM](https://crux.land/5D1UrM#google-service-account@v2) |
 | `integrations/google-service-account@v1.ts` | [https://crux.land/4irmhi](https://crux.land/4irmhi#google-service-account@v1) |
 | `integrations/shorten-url@v1.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url@v1) |
