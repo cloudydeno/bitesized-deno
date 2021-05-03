@@ -8,6 +8,7 @@ Any future versions will be assigned a new URL.
 | Module | Permanent URL |
 |---|---|
 | `system/sub-process@v2.ts` | [https://crux.land/454pqj](https://crux.land/454pqj#sub-process@v2) |
+| `system/terminal-input@v1.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input@v1) |
 | `formatting/filesize@v1.ts` | [https://crux.land/6wZ5Sz](https://crux.land/6wZ5Sz#filesize@v1) |
 | `formatting/ini@v1.ts` | [https://crux.land/6mMyhY](https://crux.land/6mMyhY#ini@v1) |
 | `integrations/google-service-account@v2.ts` | [https://crux.land/5D1UrM](https://crux.land/5D1UrM#google-service-account@v2) |
@@ -17,7 +18,6 @@ Any future versions will be assigned a new URL.
 | `integrations/google-metadata-service@v1beta1.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service@v1beta1) |
 | `logic/set-util@v1.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util@v1) |
 | `logic/fixed-interval@v1.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval@v1) |
-| `logic/terminal-input@v1.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input@v1) |
 | `logic/factory-map@v1.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map@v1) |
 | `tools/crux-publish@v1.ts` | [https://crux.land/5CjFpG](https://crux.land/5CjFpG#crux-publish@v1) |
 
