@@ -13,7 +13,7 @@ Any future versions will be assigned a new URL.
 | `integrations/google-service-account@v2.ts` | [https://crux.land/5D1UrM](https://crux.land/5D1UrM#google-service-account@v2) |
 | `integrations/google-service-account@v1.ts` | [https://crux.land/4irmhi](https://crux.land/4irmhi#google-service-account@v1) |
 | `integrations/shorten-url@v1.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url@v1) |
-| `integrations/firebase-hosting-deploy@v1.ts` | [https://crux.land/7Fjaxx](https://crux.land/7Fjaxx#firebase-hosting-deploy@v1) |
+| `integrations/firebase-hosting-deploy@v1.ts` | [https://crux.land/3JVH9X](https://crux.land/3JVH9X#firebase-hosting-deploy@v1) |
 | `integrations/google-metadata-service@v1beta1.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service@v1beta1) |
 | `logic/set-util@v1.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util@v1) |
 | `logic/fixed-interval@v1.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval@v1) |
