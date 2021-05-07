@@ -42,6 +42,7 @@ for await (
   }
 }
 console.log(`Submitted ${modules.length} modules to ${serverOrigin}`);
+modules.sort((a, b) => a.path.localeCompare(b.path));
 
 if (Deno.args.includes("--update-readme")) {
   await writeProgress(`Updating README.md ... `);
