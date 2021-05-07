@@ -1,5 +1,6 @@
 // copy of https://deno.land/x/curve25519@v0.2.0/mod.ts
 // difference: uses /std/encoding for hex-decoding
+// also compacted to fit within 20k quota
 
 import { decodeString } from "https://deno.land/std@0.95.0/encoding/hex.ts";
 
@@ -33,60 +34,16 @@ export class Curve25519 {
     this._121665 = this.gf([0xdb41, 1]);
 
     this.D = this.gf([
-      0x78a3,
-      0x1359,
-      0x4dca,
-      0x75eb,
-      0xd8ab,
-      0x4141,
-      0x0a4d,
-      0x0070,
-      0xe898,
-      0x7779,
-      0x4079,
-      0x8cc7,
-      0xfe73,
-      0x2b6f,
-      0x6cee,
-      0x5203,
+      0x78a3, 0x1359, 0x4dca, 0x75eb, 0xd8ab, 0x4141, 0x0a4d, 0x0070,
+      0xe898, 0x7779, 0x4079, 0x8cc7, 0xfe73, 0x2b6f, 0x6cee, 0x5203,
     ]);
-
     this.D2 = this.gf([
-      0xf159,
-      0x26b2,
-      0x9b94,
-      0xebd6,
-      0xb156,
-      0x8283,
-      0x149a,
-      0x00e0,
-      0xd130,
-      0xeef3,
-      0x80f2,
-      0x198e,
-      0xfce7,
-      0x56df,
-      0xd9dc,
-      0x2406,
+      0xf159, 0x26b2, 0x9b94, 0xebd6, 0xb156, 0x8283, 0x149a, 0x00e0,
+      0xd130, 0xeef3, 0x80f2, 0x198e, 0xfce7, 0x56df, 0xd9dc, 0x2406,
     ]);
-
     this.I = this.gf([
-      0xa0b0,
-      0x4a0e,
-      0x1b27,
-      0xc4ee,
-      0xe478,
-      0xad2f,
-      0x1806,
-      0x2f43,
-      0xd7a7,
-      0x3dfb,
-      0x0099,
-      0x2b4d,
-      0xdf0b,
-      0x4fc1,
-      0x2480,
-      0x2b83,
+      0xa0b0, 0x4a0e, 0x1b27, 0xc4ee, 0xe478, 0xad2f, 0x1806, 0x2f43,
+      0xd7a7, 0x3dfb, 0x0099, 0x2b4d, 0xdf0b, 0x4fc1, 0x2480, 0x2b83,
     ]);
   }
 
@@ -117,344 +74,83 @@ export class Curve25519 {
   public M(o: Int32Array, a: Int32Array, b: Int32Array): void {
     // performance: using discrete vars instead of an array and
     // avoidance of 'for' loops here increases performance by factor 3
-    let v: number,
-      c: number,
-      t0: number = 0,
-      t1: number = 0,
-      t2: number = 0,
-      t3: number = 0,
-      t4: number = 0,
-      t5: number = 0,
-      t6: number = 0,
-      t7: number = 0,
-      t8: number = 0,
-      t9: number = 0,
-      t10: number = 0,
-      t11: number = 0,
-      t12: number = 0,
-      t13: number = 0,
-      t14: number = 0,
-      t15: number = 0,
-      t16: number = 0,
-      t17: number = 0,
-      t18: number = 0,
-      t19: number = 0,
-      t20: number = 0,
-      t21: number = 0,
-      t22: number = 0,
-      t23: number = 0,
-      t24: number = 0,
-      t25: number = 0,
-      t26: number = 0,
-      t27: number = 0,
-      t28: number = 0,
-      t29: number = 0,
-      t30: number = 0,
-      b0: number = b[0],
-      b1: number = b[1],
-      b2: number = b[2],
-      b3: number = b[3],
-      b4: number = b[4],
-      b5: number = b[5],
-      b6: number = b[6],
-      b7: number = b[7],
-      b8: number = b[8],
-      b9: number = b[9],
-      b10: number = b[10],
-      b11: number = b[11],
-      b12: number = b[12],
-      b13: number = b[13],
-      b14: number = b[14],
-      b15: number = b[15];
+    let v = 0, c = 0,
+      t0 = 0, t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0, t6 = 0, t7 = 0,
+      t8 = 0, t9 = 0, t10 = 0, t11 = 0, t12 = 0, t13 = 0, t14 = 0, t15 = 0,
+      t16 = 0, t17 = 0, t18 = 0, t19 = 0, t20 = 0, t21 = 0, t22 = 0, t23 = 0,
+      t24 = 0, t25 = 0, t26 = 0, t27 = 0, t28 = 0, t29 = 0, t30 = 0,
+      b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3], b4 = b[4], b5 = b[5],
+      b6 = b[6], b7 = b[7], b8 = b[8], b9 = b[9], b10 = b[10], b11 = b[11],
+      b12 = b[12], b13 = b[13], b14 = b[14], b15 = b[15];
 
     v = a[0];
-    t0 += v * b0;
-    t1 += v * b1;
-    t2 += v * b2;
-    t3 += v * b3;
-    t4 += v * b4;
-    t5 += v * b5;
-    t6 += v * b6;
-    t7 += v * b7;
-    t8 += v * b8;
-    t9 += v * b9;
-    t10 += v * b10;
-    t11 += v * b11;
-    t12 += v * b12;
-    t13 += v * b13;
-    t14 += v * b14;
-    t15 += v * b15;
+    t0 += v * b0; t1 += v * b1; t2 += v * b2; t3 += v * b3; t4 += v * b4; t5 += v * b5;
+    t6 += v * b6; t7 += v * b7; t8 += v * b8; t9 += v * b9; t10 += v * b10;
+    t11 += v * b11; t12 += v * b12; t13 += v * b13; t14 += v * b14; t15 += v * b15;
     v = a[1];
-    t1 += v * b0;
-    t2 += v * b1;
-    t3 += v * b2;
-    t4 += v * b3;
-    t5 += v * b4;
-    t6 += v * b5;
-    t7 += v * b6;
-    t8 += v * b7;
-    t9 += v * b8;
-    t10 += v * b9;
-    t11 += v * b10;
-    t12 += v * b11;
-    t13 += v * b12;
-    t14 += v * b13;
-    t15 += v * b14;
-    t16 += v * b15;
+    t1 += v * b0; t2 += v * b1; t3 += v * b2; t4 += v * b3; t5 += v * b4; t6 += v * b5;
+    t7 += v * b6; t8 += v * b7; t9 += v * b8; t10 += v * b9; t11 += v * b10;
+    t12 += v * b11; t13 += v * b12; t14 += v * b13; t15 += v * b14; t16 += v * b15;
     v = a[2];
-    t2 += v * b0;
-    t3 += v * b1;
-    t4 += v * b2;
-    t5 += v * b3;
-    t6 += v * b4;
-    t7 += v * b5;
-    t8 += v * b6;
-    t9 += v * b7;
-    t10 += v * b8;
-    t11 += v * b9;
-    t12 += v * b10;
-    t13 += v * b11;
-    t14 += v * b12;
-    t15 += v * b13;
-    t16 += v * b14;
-    t17 += v * b15;
+    t2 += v * b0; t3 += v * b1; t4 += v * b2; t5 += v * b3; t6 += v * b4; t7 += v * b5;
+    t8 += v * b6; t9 += v * b7; t10 += v * b8; t11 += v * b9; t12 += v * b10;
+    t13 += v * b11; t14 += v * b12; t15 += v * b13; t16 += v * b14; t17 += v * b15;
     v = a[3];
-    t3 += v * b0;
-    t4 += v * b1;
-    t5 += v * b2;
-    t6 += v * b3;
-    t7 += v * b4;
-    t8 += v * b5;
-    t9 += v * b6;
-    t10 += v * b7;
-    t11 += v * b8;
-    t12 += v * b9;
-    t13 += v * b10;
-    t14 += v * b11;
-    t15 += v * b12;
-    t16 += v * b13;
-    t17 += v * b14;
-    t18 += v * b15;
+    t3 += v * b0; t4 += v * b1; t5 += v * b2; t6 += v * b3; t7 += v * b4; t8 += v * b5;
+    t9 += v * b6; t10 += v * b7; t11 += v * b8; t12 += v * b9; t13 += v * b10;
+    t14 += v * b11; t15 += v * b12; t16 += v * b13; t17 += v * b14; t18 += v * b15;
     v = a[4];
-    t4 += v * b0;
-    t5 += v * b1;
-    t6 += v * b2;
-    t7 += v * b3;
-    t8 += v * b4;
-    t9 += v * b5;
-    t10 += v * b6;
-    t11 += v * b7;
-    t12 += v * b8;
-    t13 += v * b9;
-    t14 += v * b10;
-    t15 += v * b11;
-    t16 += v * b12;
-    t17 += v * b13;
-    t18 += v * b14;
-    t19 += v * b15;
+    t4 += v * b0; t5 += v * b1; t6 += v * b2; t7 += v * b3; t8 += v * b4; t9 += v * b5;
+    t10 += v * b6; t11 += v * b7; t12 += v * b8; t13 += v * b9; t14 += v * b10;
+    t15 += v * b11; t16 += v * b12; t17 += v * b13; t18 += v * b14; t19 += v * b15;
     v = a[5];
-    t5 += v * b0;
-    t6 += v * b1;
-    t7 += v * b2;
-    t8 += v * b3;
-    t9 += v * b4;
-    t10 += v * b5;
-    t11 += v * b6;
-    t12 += v * b7;
-    t13 += v * b8;
-    t14 += v * b9;
-    t15 += v * b10;
-    t16 += v * b11;
-    t17 += v * b12;
-    t18 += v * b13;
-    t19 += v * b14;
-    t20 += v * b15;
+    t5 += v * b0; t6 += v * b1; t7 += v * b2; t8 += v * b3; t9 += v * b4; t10 += v * b5;
+    t11 += v * b6; t12 += v * b7; t13 += v * b8; t14 += v * b9; t15 += v * b10;
+    t16 += v * b11; t17 += v * b12; t18 += v * b13; t19 += v * b14; t20 += v * b15;
     v = a[6];
-    t6 += v * b0;
-    t7 += v * b1;
-    t8 += v * b2;
-    t9 += v * b3;
-    t10 += v * b4;
-    t11 += v * b5;
-    t12 += v * b6;
-    t13 += v * b7;
-    t14 += v * b8;
-    t15 += v * b9;
-    t16 += v * b10;
-    t17 += v * b11;
-    t18 += v * b12;
-    t19 += v * b13;
-    t20 += v * b14;
-    t21 += v * b15;
+    t6 += v * b0; t7 += v * b1; t8 += v * b2; t9 += v * b3; t10 += v * b4; t11 += v * b5;
+    t12 += v * b6; t13 += v * b7; t14 += v * b8; t15 += v * b9; t16 += v * b10;
+    t17 += v * b11; t18 += v * b12; t19 += v * b13; t20 += v * b14; t21 += v * b15;
     v = a[7];
-    t7 += v * b0;
-    t8 += v * b1;
-    t9 += v * b2;
-    t10 += v * b3;
-    t11 += v * b4;
-    t12 += v * b5;
-    t13 += v * b6;
-    t14 += v * b7;
-    t15 += v * b8;
-    t16 += v * b9;
-    t17 += v * b10;
-    t18 += v * b11;
-    t19 += v * b12;
-    t20 += v * b13;
-    t21 += v * b14;
-    t22 += v * b15;
+    t7 += v * b0; t8 += v * b1; t9 += v * b2; t10 += v * b3; t11 += v * b4; t12 += v * b5;
+    t13 += v * b6; t14 += v * b7; t15 += v * b8; t16 += v * b9; t17 += v * b10;
+    t18 += v * b11; t19 += v * b12; t20 += v * b13; t21 += v * b14; t22 += v * b15;
     v = a[8];
-    t8 += v * b0;
-    t9 += v * b1;
-    t10 += v * b2;
-    t11 += v * b3;
-    t12 += v * b4;
-    t13 += v * b5;
-    t14 += v * b6;
-    t15 += v * b7;
-    t16 += v * b8;
-    t17 += v * b9;
-    t18 += v * b10;
-    t19 += v * b11;
-    t20 += v * b12;
-    t21 += v * b13;
-    t22 += v * b14;
-    t23 += v * b15;
+    t8 += v * b0; t9 += v * b1; t10 += v * b2; t11 += v * b3; t12 += v * b4; t13 += v * b5;
+    t14 += v * b6; t15 += v * b7; t16 += v * b8; t17 += v * b9; t18 += v * b10;
+    t19 += v * b11; t20 += v * b12; t21 += v * b13; t22 += v * b14; t23 += v * b15;
     v = a[9];
-    t9 += v * b0;
-    t10 += v * b1;
-    t11 += v * b2;
-    t12 += v * b3;
-    t13 += v * b4;
-    t14 += v * b5;
-    t15 += v * b6;
-    t16 += v * b7;
-    t17 += v * b8;
-    t18 += v * b9;
-    t19 += v * b10;
-    t20 += v * b11;
-    t21 += v * b12;
-    t22 += v * b13;
-    t23 += v * b14;
-    t24 += v * b15;
+    t9 += v * b0; t10 += v * b1; t11 += v * b2; t12 += v * b3; t13 += v * b4; t14 += v * b5;
+    t15 += v * b6; t16 += v * b7; t17 += v * b8; t18 += v * b9; t19 += v * b10;
+    t20 += v * b11; t21 += v * b12; t22 += v * b13; t23 += v * b14; t24 += v * b15;
     v = a[10];
-    t10 += v * b0;
-    t11 += v * b1;
-    t12 += v * b2;
-    t13 += v * b3;
-    t14 += v * b4;
-    t15 += v * b5;
-    t16 += v * b6;
-    t17 += v * b7;
-    t18 += v * b8;
-    t19 += v * b9;
-    t20 += v * b10;
-    t21 += v * b11;
-    t22 += v * b12;
-    t23 += v * b13;
-    t24 += v * b14;
-    t25 += v * b15;
+    t10 += v * b0; t11 += v * b1; t12 += v * b2; t13 += v * b3; t14 += v * b4; t15 += v * b5;
+    t16 += v * b6; t17 += v * b7; t18 += v * b8; t19 += v * b9; t20 += v * b10;
+    t21 += v * b11; t22 += v * b12; t23 += v * b13; t24 += v * b14; t25 += v * b15;
     v = a[11];
-    t11 += v * b0;
-    t12 += v * b1;
-    t13 += v * b2;
-    t14 += v * b3;
-    t15 += v * b4;
-    t16 += v * b5;
-    t17 += v * b6;
-    t18 += v * b7;
-    t19 += v * b8;
-    t20 += v * b9;
-    t21 += v * b10;
-    t22 += v * b11;
-    t23 += v * b12;
-    t24 += v * b13;
-    t25 += v * b14;
-    t26 += v * b15;
+    t11 += v * b0; t12 += v * b1; t13 += v * b2; t14 += v * b3; t15 += v * b4; t16 += v * b5;
+    t17 += v * b6; t18 += v * b7; t19 += v * b8; t20 += v * b9; t21 += v * b10;
+    t22 += v * b11; t23 += v * b12; t24 += v * b13; t25 += v * b14; t26 += v * b15;
     v = a[12];
-    t12 += v * b0;
-    t13 += v * b1;
-    t14 += v * b2;
-    t15 += v * b3;
-    t16 += v * b4;
-    t17 += v * b5;
-    t18 += v * b6;
-    t19 += v * b7;
-    t20 += v * b8;
-    t21 += v * b9;
-    t22 += v * b10;
-    t23 += v * b11;
-    t24 += v * b12;
-    t25 += v * b13;
-    t26 += v * b14;
-    t27 += v * b15;
+    t12 += v * b0; t13 += v * b1; t14 += v * b2; t15 += v * b3; t16 += v * b4; t17 += v * b5;
+    t18 += v * b6; t19 += v * b7; t20 += v * b8; t21 += v * b9; t22 += v * b10;
+    t23 += v * b11; t24 += v * b12; t25 += v * b13; t26 += v * b14; t27 += v * b15;
     v = a[13];
-    t13 += v * b0;
-    t14 += v * b1;
-    t15 += v * b2;
-    t16 += v * b3;
-    t17 += v * b4;
-    t18 += v * b5;
-    t19 += v * b6;
-    t20 += v * b7;
-    t21 += v * b8;
-    t22 += v * b9;
-    t23 += v * b10;
-    t24 += v * b11;
-    t25 += v * b12;
-    t26 += v * b13;
-    t27 += v * b14;
-    t28 += v * b15;
+    t13 += v * b0; t14 += v * b1; t15 += v * b2; t16 += v * b3; t17 += v * b4; t18 += v * b5;
+    t19 += v * b6; t20 += v * b7; t21 += v * b8; t22 += v * b9; t23 += v * b10;
+    t24 += v * b11; t25 += v * b12; t26 += v * b13; t27 += v * b14; t28 += v * b15;
     v = a[14];
-    t14 += v * b0;
-    t15 += v * b1;
-    t16 += v * b2;
-    t17 += v * b3;
-    t18 += v * b4;
-    t19 += v * b5;
-    t20 += v * b6;
-    t21 += v * b7;
-    t22 += v * b8;
-    t23 += v * b9;
-    t24 += v * b10;
-    t25 += v * b11;
-    t26 += v * b12;
-    t27 += v * b13;
-    t28 += v * b14;
-    t29 += v * b15;
+    t14 += v * b0; t15 += v * b1; t16 += v * b2; t17 += v * b3; t18 += v * b4; t19 += v * b5;
+    t20 += v * b6; t21 += v * b7; t22 += v * b8; t23 += v * b9; t24 += v * b10;
+    t25 += v * b11; t26 += v * b12; t27 += v * b13; t28 += v * b14; t29 += v * b15;
     v = a[15];
-    t15 += v * b0;
-    t16 += v * b1;
-    t17 += v * b2;
-    t18 += v * b3;
-    t19 += v * b4;
-    t20 += v * b5;
-    t21 += v * b6;
-    t22 += v * b7;
-    t23 += v * b8;
-    t24 += v * b9;
-    t25 += v * b10;
-    t26 += v * b11;
-    t27 += v * b12;
-    t28 += v * b13;
-    t29 += v * b14;
-    t30 += v * b15;
+    t15 += v * b0; t16 += v * b1; t17 += v * b2; t18 += v * b3; t19 += v * b4; t20 += v * b5;
+    t21 += v * b6; t22 += v * b7; t23 += v * b8; t24 += v * b9; t25 += v * b10;
+    t26 += v * b11; t27 += v * b12; t28 += v * b13; t29 += v * b14; t30 += v * b15;
 
-    t0 += 38 * t16;
-    t1 += 38 * t17;
-    t2 += 38 * t18;
-    t3 += 38 * t19;
-    t4 += 38 * t20;
-    t5 += 38 * t21;
-    t6 += 38 * t22;
-    t7 += 38 * t23;
-    t8 += 38 * t24;
-    t9 += 38 * t25;
-    t10 += 38 * t26;
-    t11 += 38 * t27;
-    t12 += 38 * t28;
-    t13 += 38 * t29;
-    t14 += 38 * t30;
+    t0 += 38 * t16; t1 += 38 * t17; t2 += 38 * t18; t3 += 38 * t19; t4 += 38 * t20;
+    t5 += 38 * t21; t6 += 38 * t22; t7 += 38 * t23; t8 += 38 * t24; t9 += 38 * t25;
+    t10 += 38 * t26; t11 += 38 * t27; t12 += 38 * t28; t13 += 38 * t29; t14 += 38 * t30;
     // t15 left as it is
 
     // first car
@@ -584,15 +280,15 @@ export class Curve25519 {
   }
 
   public add(p: Array<Int32Array>, q: Array<Int32Array>): void {
-    let a: Int32Array = this.gf(),
-      b: Int32Array = this.gf(),
-      c: Int32Array = this.gf(),
-      d: Int32Array = this.gf(),
-      e: Int32Array = this.gf(),
-      f: Int32Array = this.gf(),
-      g: Int32Array = this.gf(),
-      h: Int32Array = this.gf(),
-      t: Int32Array = this.gf();
+    let a = this.gf(),
+      b = this.gf(),
+      c = this.gf(),
+      d = this.gf(),
+      e = this.gf(),
+      f = this.gf(),
+      g = this.gf(),
+      h = this.gf(),
+      t = this.gf();
 
     this.Z(a, p[1], p[0]);
     this.Z(t, q[1], q[0]);
@@ -615,7 +311,7 @@ export class Curve25519 {
   }
 
   public set25519(r: Int32Array, a: Int32Array): void {
-    for (let i: number = 0; i < 16; i++) {
+    for (let i = 0; i < 16; i++) {
       r[i] = a[i];
     }
   }
@@ -644,7 +340,7 @@ export class Curve25519 {
   }
 
   public inv25519(o: Int32Array, i: Int32Array): void {
-    let a: number, c: Int32Array = this.gf();
+    let a: number, c = this.gf();
 
     for (a = 0; a < 16; a++) {
       c[a] = i[a];
@@ -664,7 +360,7 @@ export class Curve25519 {
   }
 
   public neq25519(a: Int32Array, b: Int32Array): boolean {
-    let c: Uint8Array = new Uint8Array(32), d: Uint8Array = new Uint8Array(32);
+    let c = new Uint8Array(32), d = new Uint8Array(32);
 
     this.pack25519(c, a);
     this.pack25519(d, b);
@@ -673,7 +369,7 @@ export class Curve25519 {
   }
 
   public par25519(a: Int32Array): number {
-    let d: Uint8Array = new Uint8Array(32);
+    let d = new Uint8Array(32);
 
     this.pack25519(d, a);
 
@@ -681,7 +377,7 @@ export class Curve25519 {
   }
 
   public pow2523(o: Int32Array, i: Int32Array): void {
-    let a: number, c: Int32Array = this.gf();
+    let a: number, c = this.gf();
 
     for (a = 0; a < 16; a++) {
       c[a] = i[a];
@@ -701,7 +397,7 @@ export class Curve25519 {
   }
 
   public cswap(p: Array<Int32Array>, q: Array<Int32Array>, b: number): void {
-    for (let i: number = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       this.sel25519(p[i], q[i], b);
     }
   }
@@ -709,8 +405,8 @@ export class Curve25519 {
   public pack25519(o: Uint8Array, n: Int32Array): void {
     let i: number,
       j: number,
-      m: Int32Array = this.gf(),
-      t: Int32Array = this.gf();
+      m = this.gf(),
+      t = this.gf();
 
     for (i = 0; i < 16; i++) {
       t[i] = n[i];
@@ -742,7 +438,7 @@ export class Curve25519 {
   }
 
   public unpack25519(o: Int32Array, n: Uint8Array): void {
-    for (let i: number = 0; i < 16; i++) {
+    for (let i = 0; i < 16; i++) {
       o[i] = n[2 * i] + (n[2 * i + 1] << 8);
     }
 
@@ -750,13 +446,13 @@ export class Curve25519 {
   }
 
   public unpackNeg(r: Array<Int32Array>, p: Uint8Array): number {
-    let t: Int32Array = this.gf(),
-      chk: Int32Array = this.gf(),
-      num: Int32Array = this.gf(),
-      den: Int32Array = this.gf(),
-      den2: Int32Array = this.gf(),
-      den4: Int32Array = this.gf(),
-      den6: Int32Array = this.gf();
+    let t = this.gf(),
+      chk = this.gf(),
+      num = this.gf(),
+      den = this.gf(),
+      den2 = this.gf(),
+      den4 = this.gf(),
+      den6 = this.gf();
 
     this.set25519(r[2], this.gf1);
     this.unpack25519(r[1], p);
@@ -805,13 +501,13 @@ export class Curve25519 {
     s: Uint8Array,
     p: Uint8Array,
   ): void {
-    let x: Int32Array = new Int32Array(80),
-      a: Int32Array = this.gf(),
-      b: Int32Array = this.gf(),
-      c: Int32Array = this.gf(),
-      d: Int32Array = this.gf(),
-      e: Int32Array = this.gf(),
-      f: Int32Array = this.gf(),
+    let x = new Int32Array(80),
+      a = this.gf(),
+      b = this.gf(),
+      c = this.gf(),
+      d = this.gf(),
+      e = this.gf(),
+      f = this.gf(),
       r: number,
       i: number;
 
@@ -873,7 +569,7 @@ export class Curve25519 {
    * Returns secretKey * publicKey
    */
   public scalarMult(secretKey: Uint8Array, publicKey: Uint8Array): Uint8Array {
-    let q: Uint8Array = new Uint8Array(32);
+    let q = new Uint8Array(32);
 
     this.crypto_scalarmult(q, secretKey, publicKey);
 
@@ -893,8 +589,8 @@ export class Curve25519 {
       return null;
     }
 
-    let secretKey: Uint8Array = seed.slice();
-    let publicKey: Uint8Array = new Uint8Array(32);
+    let secretKey = seed.slice();
+    let publicKey = new Uint8Array(32);
 
     // harden the secret key by clearing bit 0, 1, 2, 255 and setting bit 254
     // clearing the lower 3 bits of the secret key ensures that is it a multiple of 8
@@ -968,3 +664,8 @@ export class Curve25519 {
     return true;
   }
 }
+
+Deno.test('Curve25519 selftest', () => {
+  const c = new Curve25519();
+  if (!c.selftest()) throw new Error("Self-test failed");
+});
