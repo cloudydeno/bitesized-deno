@@ -15,6 +15,7 @@ Any future versions will be assigned a new URL.
 | `integrations/google-service-account@v1.ts` | [https://crux.land/4irmhi](https://crux.land/4irmhi#google-service-account@v1) |
 | `integrations/google-service-account@v2.ts` | [https://crux.land/5D1UrM](https://crux.land/5D1UrM#google-service-account@v2) |
 | `integrations/shorten-url@v1.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url@v1) |
+| `logic/combine-iterators@v1.ts` | [https://crux.land/7Ed9a6](https://crux.land/7Ed9a6#combine-iterators@v1) |
 | `logic/factory-map@v1.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map@v1) |
 | `logic/fixed-interval@v1.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval@v1) |
 | `logic/set-util@v1.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util@v1) |
