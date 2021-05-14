@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Check w/ ${{ matrix.deno-version }}
     strategy:
-      fail-fast: false
       matrix:
-        deno-version: ["v1.8", "v1.9", "canary"]
+        deno-version: ["v1.9", "v1.10", "canary"]
+      fail-fast: false # run each branch to completion
 
     steps:
     - name: Checkout source
@@ -55,10 +55,10 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@v2
 
-    - name: Use Deno v1.9
+    - name: Use Deno v1.10
       uses: denoland/setup-deno@main
       with:
-        deno-version: v1.9
+        deno-version: v1.10
 
     # "https" cache: code from the Internet
     # External sources won't change much so we use less precise keys
