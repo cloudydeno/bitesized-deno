@@ -12,7 +12,7 @@ jobs:
     name: Check w/ ${{ matrix.deno-version }}
     strategy:
       matrix:
-        deno-version: ["v1.10", "v1.11", "v1.12", "canary"]
+        deno-version: ["v1.10", "v1.11", "v1.12"] # "canary"
       fail-fast: false # run each branch to completion
 
     steps:
