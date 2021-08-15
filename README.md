@@ -19,6 +19,7 @@ Any future versions will be assigned a new URL.
 | `logic/factory-map@v1.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map@v1) |
 | `logic/fixed-interval@v1.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval@v1) |
 | `logic/set-util@v1.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util@v1) |
+| `streams/transform-text@v1.ts` | [https://crux.land/3U9C6W](https://crux.land/3U9C6W#transform-text@v1) |
 | `system/sub-process@v2.ts` | [https://crux.land/454pqj](https://crux.land/454pqj#sub-process@v2) |
 | `system/terminal-input@v1.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input@v1) |
 | `tools/crux-publish@v1.ts` | [https://crux.land/7BkAcd](https://crux.land/7BkAcd#crux-publish@v1) |
