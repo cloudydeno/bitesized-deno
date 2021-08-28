@@ -2,7 +2,7 @@
 // difference: uses /std/encoding for hex-decoding
 // also compacted to fit within 20k quota
 
-import { decodeString } from "https://deno.land/std@0.95.0/encoding/hex.ts";
+import { decode } from "https://deno.land/std@0.105.0/encoding/hex.ts";
 
 /** Hopefully a somewhat timing-attack-robust buffer equality check. */
 export function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
@@ -663,6 +663,10 @@ export class Curve25519 {
 
     return true;
   }
+}
+
+function decodeString(str: string) {
+  return decode(new TextEncoder().encode(str));
 }
 
 Deno.test('Curve25519 selftest', () => {

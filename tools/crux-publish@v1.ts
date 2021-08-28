@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno run --allow-read=. --allow-write=README.md --allow-net=crux.land
-import { walk } from "https://deno.land/std@0.95.0/fs/walk.ts";
+import { walk } from "https://deno.land/std@0.105.0/fs/walk.ts";
 const serverOrigin = "https://crux.land";
 
 // Let the server know who we are, if we're from the Internet
