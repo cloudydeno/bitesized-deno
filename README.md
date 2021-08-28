@@ -8,19 +8,19 @@ Any future versions will be assigned a new URL.
 | Module | Permanent URL |
 |---|---|
 | `crypto/curve25519.ts` | [https://crux.land/tqkzx](https://crux.land/tqkzx#curve25519) |
-| `formatting/filesize@v1.ts` | [https://crux.land/6wZ5Sz](https://crux.land/6wZ5Sz#filesize@v1) |
-| `formatting/ini@v1.ts` | [https://crux.land/6mMyhY](https://crux.land/6mMyhY#ini@v1) |
-| `integrations/firebase-hosting-deploy@v1.ts` | [https://crux.land/3cuBwy](https://crux.land/3cuBwy#firebase-hosting-deploy@v1) |
-| `integrations/google-metadata-service@v1beta1.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service@v1beta1) |
+| `formatting/filesize.ts` | [https://crux.land/6wZ5Sz](https://crux.land/6wZ5Sz#filesize) |
+| `formatting/ini.ts` | [https://crux.land/6mMyhY](https://crux.land/6mMyhY#ini) |
+| `integrations/firebase-hosting-deploy.ts` | [https://crux.land/3cuBwy](https://crux.land/3cuBwy#firebase-hosting-deploy) |
+| `integrations/google-metadata-service.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service) |
 | `integrations/google-service-account.ts` | [https://crux.land/8szz6](https://crux.land/8szz6#google-service-account) |
-| `integrations/shorten-url@v1.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url@v1) |
-| `logic/combine-iterators@v1.ts` | [https://crux.land/7Ed9a6](https://crux.land/7Ed9a6#combine-iterators@v1) |
-| `logic/factory-map@v1.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map@v1) |
-| `logic/fixed-interval@v1.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval@v1) |
-| `logic/set-util@v1.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util@v1) |
-| `streams/transform-text@v1.ts` | [https://crux.land/3U9C6W](https://crux.land/3U9C6W#transform-text@v1) |
-| `system/sub-process@v2.ts` | [https://crux.land/Fjf2o](https://crux.land/Fjf2o#sub-process@v2) |
-| `system/terminal-input@v1.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input@v1) |
-| `tools/crux-publish@v1.ts` | [https://crux.land/LNrWD](https://crux.land/LNrWD#crux-publish@v1) |
+| `integrations/shorten-url.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url) |
+| `logic/combine-iterators.ts` | [https://crux.land/7Ed9a6](https://crux.land/7Ed9a6#combine-iterators) |
+| `logic/factory-map.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map) |
+| `logic/fixed-interval.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval) |
+| `logic/set-util.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util) |
+| `streams/transform-text.ts` | [https://crux.land/3U9C6W](https://crux.land/3U9C6W#transform-text) |
+| `system/sub-process.ts` | [https://crux.land/Fjf2o](https://crux.land/Fjf2o#sub-process) |
+| `system/terminal-input.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input) |
+| `tools/crux-publish.ts` | [https://crux.land/LNrWD](https://crux.land/LNrWD#crux-publish) |
 
 The above table is automatically updated by Github Actions after typechecking passes with multiple Deno releases.
