@@ -21,6 +21,7 @@ for await (
   })
 ) {
   if (file.isSymlink) continue;
+  if (file.name.endsWith('_test.ts')) continue;
   await writeProgress(`  - ${file.name} ... `);
 
   if (modules.length >= 20) {
