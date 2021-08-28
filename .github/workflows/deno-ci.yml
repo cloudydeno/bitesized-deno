@@ -74,7 +74,7 @@ jobs:
         restore-keys: deno-https/v1-
 
     - name: Publish to crux.land
-      run: time ./tools/crux-publish@v1.ts . --update-readme
+      run: time ./tools/crux-publish.ts . --update-readme
 
     - uses: EndBug/add-and-commit@v7
       with:
