@@ -1,6 +1,6 @@
 import {
   assertEquals,
-} from "https://deno.land/std@0.95.0/testing/asserts.ts";
+} from "https://deno.land/std@0.105.0/testing/asserts.ts";
 
 import {
   ServiceAccount,
@@ -35,7 +35,7 @@ Deno.test('Self-signing a JWT', async () => {
 });
 
 
-const PrivateKey = `-----BEGIN PRIVATE KEY-----
+export const PrivateKey = `-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVZ6og4XGxLAHH
 ZwHm27AtUMP6+8wFqllvup0Tr0V21YvxzPxWjav2+mLOIM8upa7pzvcpc5EiCH58
 denmLJsygqo0r2B8WhzHY+rCIWJfV2YSZxjzpvSAHfzLJrDphXgqgnCNxEjRsuyC

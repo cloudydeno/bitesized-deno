@@ -8,7 +8,7 @@
 //   https://doc.deno.land/https/danopia.net/deno/firebase-hosting-deploy@v1.ts
 
 import { gzipEncode } from "https://deno.land/x/wasm_gzip@v1.0.0/mod.ts";
-import { Sha256 } from "https://deno.land/std@0.95.0/hash/sha256.ts";
+import { Sha256 } from "https://deno.land/std@0.105.0/hash/sha256.ts";
 
 export type SiteFile = {path: string, body: Uint8Array};
 export async function deployFirebaseSite(siteId: string, accessToken: string, files: Iterable<SiteFile>, siteConfig?: unknown) {
