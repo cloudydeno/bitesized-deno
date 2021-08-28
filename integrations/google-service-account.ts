@@ -1,5 +1,8 @@
 import * as JWT from "https://deno.land/x/djwt@v2.2/mod.ts";
 
+export const _mockCurrentTime = Symbol();
+export const _mockFetch = Symbol();
+
 export class ServiceAccount {
   constructor(
     private credential: ServiceAccountCredential,
@@ -7,6 +10,9 @@ export class ServiceAccount {
     this.#privateKey = this.credential.private_key;
   }
   #privateKey: string;
+
+  [_mockCurrentTime]?: Date;
+  [_mockFetch] = fetch;
 
   get projectId() {
     return this.credential.project_id;
@@ -40,15 +46,15 @@ export class ServiceAccount {
       "iss": this.credential.client_email,
       "scope": scope,
       "aud": this.credential.token_uri,
-      "exp": JWT.getNumericDate(60 * 60),
-      "iat": JWT.getNumericDate(0),
+      "exp": this.getNumericDate(60 * 60),
+      "iat": this.getNumericDate(0),
     }, this.#privateKey+'    ');
 
     const payload = new FormData();
     payload.append("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
     payload.append("assertion", jwt);
 
-    const resp = await fetch(this.credential.token_uri, {
+    const resp = await this[_mockFetch](this.credential.token_uri, {
       method: 'POST',
       body: payload,
     })
@@ -63,10 +69,24 @@ export class ServiceAccount {
       "iss": this.credential.client_email,
       "sub": this.credential.client_email,
       "aud": audience,
-      "exp": JWT.getNumericDate(60 * 60),
-      "iat": JWT.getNumericDate(0),
+      "exp": this.getNumericDate(60 * 60),
+      "iat": this.getNumericDate(0),
     }, this.#privateKey+'    ');
   }
+
+
+  /**
+   * Returns the number of seconds since January 1, 1970, 00:00:00 UTC.
+   * Allows for mocking the current time.
+   * From https://github.com/timonson/djwt/blob/v2.2/mod.ts#L190-L198
+   */
+  private getNumericDate(exp: number | Date): number {
+    const now = this[_mockCurrentTime]?.valueOf() ?? Date.now();
+    return Math.round(
+      (exp instanceof Date ? exp.getTime() : now + exp * 1000) / 1000,
+    );
+  }
+
 }
 
 export interface ServiceAccountCredential {
