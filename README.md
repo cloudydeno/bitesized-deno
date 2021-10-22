@@ -10,7 +10,7 @@ Any future versions will be assigned a new URL.
 | `crypto/curve25519.ts` | [https://crux.land/tqkzx](https://crux.land/tqkzx#curve25519) |
 | `formatting/filesize.ts` | [https://crux.land/6wZ5Sz](https://crux.land/6wZ5Sz#filesize) |
 | `formatting/ini.ts` | [https://crux.land/6mMyhY](https://crux.land/6mMyhY#ini) |
-| `integrations/firebase-hosting-deploy.ts` | [https://crux.land/3cuBwy](https://crux.land/3cuBwy#firebase-hosting-deploy) |
+| `integrations/firebase-hosting-deploy.ts` | [https://crux.land/3CmzCW](https://crux.land/3CmzCW#firebase-hosting-deploy) |
 | `integrations/google-metadata-service.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service) |
 | `integrations/google-service-account.ts` | [https://crux.land/6FyxGX](https://crux.land/6FyxGX#google-service-account) |
 | `integrations/shorten-url.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url) |
