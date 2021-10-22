@@ -14,6 +14,7 @@ export type SiteFile = {path: string, body: Uint8Array};
 export async function deployFirebaseSite(opts: {
   siteId: string;
   channelId?: string;
+  channelConfig?: unknown;
   accessToken: string;
   files: Iterable<SiteFile>;
   siteConfig?: unknown;
@@ -23,6 +24,17 @@ export async function deployFirebaseSite(opts: {
     authorization,
     'content-type': 'application/json',
   };
+  
+  if (opts.channelConfig) {    
+    const params = new URLSearchParams({ channelId: opts.channelId });
+    const channel = await fetch(
+      `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/channels?${params}`, {
+        method: 'POST',
+        body: JSON.stringify(opts.channelConfig),
+        headers: jsonHeaders,
+      }).then(x => x.json());
+    console.log('TODO: Firebase channel', opts.channelId, 'is', channel);
+  }
 
   const {name, status} = await fetch(
     `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/versions`, {
