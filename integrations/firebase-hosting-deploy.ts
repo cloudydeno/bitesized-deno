@@ -11,18 +11,41 @@ import { gzipEncode } from "https://deno.land/x/wasm_gzip@v1.0.0/mod.ts";
 import { Sha256 } from "https://deno.land/std@0.105.0/hash/sha256.ts";
 
 export type SiteFile = {path: string, body: Uint8Array};
-export async function deployFirebaseSite(siteId: string, accessToken: string, files: Iterable<SiteFile>, siteConfig?: unknown) {
-  const authorization = `Bearer ${accessToken}`;
+export async function deployFirebaseSite(opts: {
+  siteId: string;
+  channelId?: string;
+  channelConfig?: unknown;
+  accessToken: string;
+  files: Iterable<SiteFile>;
+  siteConfig?: unknown;
+}) {
+  const authorization = `Bearer ${opts.accessToken}`;
   const jsonHeaders = {
     authorization,
     'content-type': 'application/json',
   };
 
+  if (opts.channelId && opts.channelConfig) {
+    const params = new URLSearchParams({ channelId: opts.channelId });
+    const channel = await fetch(
+      `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/channels?${params}`, {
+        method: 'POST',
+        body: JSON.stringify(opts.channelConfig),
+        headers: jsonHeaders,
+      }).then(x => x.json());
+    if (channel.error?.code == 409) {
+      console.log('Firebase site channel', opts.channelId, 'already exists :)');
+    } else if (channel.url) {
+      console.log('Firebase site channel', opts.channelId, 'has been created @', channel.url);
+    } else throw new Error(
+      `Channel creation failed: ${channel.error.message || JSON.stringify(channel)}`);
+  }
+
   const {name, status} = await fetch(
-    `https://firebasehosting.googleapis.com/v1beta1/sites/${siteId}/versions`, {
+    `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/versions`, {
       method: 'POST',
       body: JSON.stringify({
-        config: siteConfig,
+        config: opts.siteConfig,
       }),
       headers: jsonHeaders,
     }).then(x => x.json()) as {name: string; status: string};
@@ -30,7 +53,7 @@ export async function deployFirebaseSite(siteId: string, accessToken: string, fi
 
   const fileHashes: Record<string,string> = Object.create(null);
   const hashMap = new Map<string,SiteFile&{compressed: Uint8Array}>();
-  for (const file of files) {
+  for (const file of opts.files) {
     const compressed = gzipEncode(file.body);
     const hash = new Sha256().update(compressed).hex();
     hashMap.set(hash, {...file, compressed});
@@ -72,14 +95,15 @@ export async function deployFirebaseSite(siteId: string, accessToken: string, fi
       }),
       headers: jsonHeaders,
     }).then(x => x.json());
-  console.log('Completed Firebase release:', release);
+  console.log('Completed Firebase release:', release.name);
 
   const deployParams = new URLSearchParams([['versionName', name]]);
+  const channelPath = `/sites/${opts.siteId}${opts.channelId ? `/channels/${opts.channelId}` : ''}`;
   const deploy = await fetch(
-    `https://firebasehosting.googleapis.com/v1beta1/sites/${siteId}/releases?${deployParams}`, {
+    `https://firebasehosting.googleapis.com/v1beta1${channelPath}/releases?${deployParams}`, {
       method: 'POST',
-      headers: { authorization },
+      headers: { authorization, 'content-length': '0' },
     }).then(x => x.json());
-  console.log('Completed Firebase deploy:', deploy);
+  console.log('Completed Firebase deploy:', deploy.name, '@', deploy.releaseTime);
   return deploy;
 }
