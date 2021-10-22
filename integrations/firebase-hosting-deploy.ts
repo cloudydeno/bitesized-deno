@@ -25,7 +25,7 @@ export async function deployFirebaseSite(opts: {
     'content-type': 'application/json',
   };
   
-  if (opts.channelConfig) {    
+  if (opts.channelId && opts.channelConfig) {    
     const params = new URLSearchParams({ channelId: opts.channelId });
     const channel = await fetch(
       `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/channels?${params}`, {
