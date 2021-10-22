@@ -11,18 +11,24 @@ import { gzipEncode } from "https://deno.land/x/wasm_gzip@v1.0.0/mod.ts";
 import { Sha256 } from "https://deno.land/std@0.105.0/hash/sha256.ts";
 
 export type SiteFile = {path: string, body: Uint8Array};
-export async function deployFirebaseSite(siteId: string, accessToken: string, files: Iterable<SiteFile>, siteConfig?: unknown) {
-  const authorization = `Bearer ${accessToken}`;
+export async function deployFirebaseSite(opts: {
+  siteId: string;
+  channelId?: string;
+  accessToken: string;
+  files: Iterable<SiteFile>;
+  siteConfig?: unknown;
+}) {
+  const authorization = `Bearer ${opts.accessToken}`;
   const jsonHeaders = {
     authorization,
     'content-type': 'application/json',
   };
 
   const {name, status} = await fetch(
-    `https://firebasehosting.googleapis.com/v1beta1/sites/${siteId}/versions`, {
+    `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/versions`, {
       method: 'POST',
       body: JSON.stringify({
-        config: siteConfig,
+        config: opts.siteConfig,
       }),
       headers: jsonHeaders,
     }).then(x => x.json()) as {name: string; status: string};
@@ -30,7 +36,7 @@ export async function deployFirebaseSite(siteId: string, accessToken: string, fi
 
   const fileHashes: Record<string,string> = Object.create(null);
   const hashMap = new Map<string,SiteFile&{compressed: Uint8Array}>();
-  for (const file of files) {
+  for (const file of opts.files) {
     const compressed = gzipEncode(file.body);
     const hash = new Sha256().update(compressed).hex();
     hashMap.set(hash, {...file, compressed});
@@ -75,8 +81,9 @@ export async function deployFirebaseSite(siteId: string, accessToken: string, fi
   console.log('Completed Firebase release:', release);
 
   const deployParams = new URLSearchParams([['versionName', name]]);
+  const channelPath = `/sites/${opts.siteId}${opts.channelId ? `/channels/${opts.channelId}` : ''}`;
   const deploy = await fetch(
-    `https://firebasehosting.googleapis.com/v1beta1/sites/${siteId}/releases?${deployParams}`, {
+    `https://firebasehosting.googleapis.com/v1beta1${channelPath}/releases?${deployParams}`, {
       method: 'POST',
       headers: { authorization },
     }).then(x => x.json());
