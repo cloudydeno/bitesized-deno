@@ -24,8 +24,8 @@ export async function deployFirebaseSite(opts: {
     authorization,
     'content-type': 'application/json',
   };
-  
-  if (opts.channelId && opts.channelConfig) {    
+
+  if (opts.channelId && opts.channelConfig) {
     const params = new URLSearchParams({ channelId: opts.channelId });
     const channel = await fetch(
       `https://firebasehosting.googleapis.com/v1beta1/sites/${opts.siteId}/channels?${params}`, {
@@ -33,7 +33,12 @@ export async function deployFirebaseSite(opts: {
         body: JSON.stringify(opts.channelConfig),
         headers: jsonHeaders,
       }).then(x => x.json());
-    console.log('TODO: Firebase channel', opts.channelId, 'is', channel);
+    if (channel.error?.code == 409) {
+      console.log('Firebase site channel', opts.channelId, 'already exists :)');
+    } else if (channel.url) {
+      console.log('Firebase site channel', opts.channelId, 'has been created @', channel.url);
+    } else throw new Error(
+      `Channel creation failed: ${channel.error.message || JSON.stringify(channel)}`);
   }
 
   const {name, status} = await fetch(
@@ -90,15 +95,15 @@ export async function deployFirebaseSite(opts: {
       }),
       headers: jsonHeaders,
     }).then(x => x.json());
-  console.log('Completed Firebase release:', release);
+  console.log('Completed Firebase release:', release.name);
 
   const deployParams = new URLSearchParams([['versionName', name]]);
   const channelPath = `/sites/${opts.siteId}${opts.channelId ? `/channels/${opts.channelId}` : ''}`;
   const deploy = await fetch(
     `https://firebasehosting.googleapis.com/v1beta1${channelPath}/releases?${deployParams}`, {
       method: 'POST',
-      headers: { authorization },
+      headers: { authorization, 'content-length': '0' },
     }).then(x => x.json());
-  console.log('Completed Firebase deploy:', deploy);
+  console.log('Completed Firebase deploy:', deploy.name, '@', deploy.releaseTime);
   return deploy;
 }
