@@ -18,7 +18,7 @@ Any future versions will be assigned a new URL.
 | `logic/combine-iterators.ts` | [https://crux.land/7Ed9a6](https://crux.land/7Ed9a6#combine-iterators) |
 | `logic/factory-map.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map) |
 | `logic/fixed-interval.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval) |
-| `logic/set-util.ts` | [https://crux.land/QGXi9](https://crux.land/QGXi9#set-util) |
+| `logic/set-util.ts` | [https://crux.land/4y3NGo](https://crux.land/4y3NGo#set-util) |
 | `streams/transform-text.ts` | [https://crux.land/3U9C6W](https://crux.land/3U9C6W#transform-text) |
 | `system/sub-process.ts` | [https://crux.land/Fjf2o](https://crux.land/Fjf2o#sub-process) |
 | `system/terminal-input.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input) |
