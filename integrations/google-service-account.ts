@@ -1,4 +1,5 @@
-import * as JWT from "https://raw.githubusercontent.com/cloudydeno/pure_djwt/main/mod.ts";
+import * as JWT from "https://deno.land/x/djwt@v2.4/mod.ts";
+import * as Base64 from "https://deno.land/std@0.105.0/encoding/base64.ts";
 
 export const _mockCurrentTime = Symbol();
 export const _mockFetch = Symbol();
@@ -7,9 +8,18 @@ export class ServiceAccount {
   constructor(
     private credential: ServiceAccountCredential,
   ) {
-    this.#privateKey = this.credential.private_key;
+    // Strip PEM key down to its bytes
+    const keyData = this.credential.private_key
+      .split('\n').filter(x => !x.startsWith('-')).join('');
+    this.#privateKey = crypto.subtle.importKey(
+      'pkcs8',
+      Base64.decode(keyData),
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
   }
-  #privateKey: string;
+  #privateKey: Promise<CryptoKey>;
 
   [_mockCurrentTime]?: Date;
   [_mockFetch] = fetch;
@@ -48,7 +58,7 @@ export class ServiceAccount {
       "aud": this.credential.token_uri,
       "exp": this.getNumericDate(60 * 60),
       "iat": this.getNumericDate(0),
-    }, this.#privateKey+'    ');
+    }, await this.#privateKey);
 
     const payload = new FormData();
     payload.append("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
@@ -61,7 +71,7 @@ export class ServiceAccount {
     return await resp.json();
   }
 
-  selfSignToken(audience: string): Promise<string> {
+  async selfSignToken(audience: string): Promise<string> {
     return JWT.create({
       alg: "RS256", typ: "JWT",
       kid: this.credential.private_key_id,
@@ -71,7 +81,7 @@ export class ServiceAccount {
       "aud": audience,
       "exp": this.getNumericDate(60 * 60),
       "iat": this.getNumericDate(0),
-    }, this.#privateKey+'    ');
+    }, await this.#privateKey);
   }
 
 
