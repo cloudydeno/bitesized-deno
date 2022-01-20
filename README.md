@@ -12,7 +12,7 @@ Any future versions will be assigned a new URL.
 | `formatting/ini.ts` | [https://crux.land/6mMyhY](https://crux.land/6mMyhY#ini) |
 | `integrations/firebase-hosting-deploy.ts` | [https://crux.land/3CmzCW](https://crux.land/3CmzCW#firebase-hosting-deploy) |
 | `integrations/google-metadata-service.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service) |
-| `integrations/google-service-account.ts` | [https://crux.land/6FyxGX](https://crux.land/6FyxGX#google-service-account) |
+| `integrations/google-service-account.ts` | [https://crux.land/CtNDQ](https://crux.land/CtNDQ#google-service-account) |
 | `integrations/shorten-url.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url) |
 | `logic/async-cache.ts` | [https://crux.land/67XrpW](https://crux.land/67XrpW#async-cache) |
 | `logic/combine-iterators.ts` | [https://crux.land/7Ed9a6](https://crux.land/7Ed9a6#combine-iterators) |
