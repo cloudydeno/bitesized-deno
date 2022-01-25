@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         deno-version:
-        - v1.16
         - v1.17
         - v1.18
         - canary
