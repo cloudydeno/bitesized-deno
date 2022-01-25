@@ -20,7 +20,7 @@ Any future versions will be assigned a new URL.
 | `logic/fixed-interval.ts` | [https://crux.land/4MC9JG](https://crux.land/4MC9JG#fixed-interval) |
 | `logic/set-util.ts` | [https://crux.land/4y3NGo](https://crux.land/4y3NGo#set-util) |
 | `streams/transform-text.ts` | [https://crux.land/3U9C6W](https://crux.land/3U9C6W#transform-text) |
-| `system/sub-process.ts` | [https://crux.land/Fjf2o](https://crux.land/Fjf2o#sub-process) |
+| `system/sub-process.ts` | [https://crux.land/2isPVe](https://crux.land/2isPVe#sub-process) |
 | `system/terminal-input.ts` | [https://crux.land/3aKrZ4](https://crux.land/3aKrZ4#terminal-input) |
 | `tools/crux-publish.ts` | [https://crux.land/LNrWD](https://crux.land/LNrWD#crux-publish) |
 
