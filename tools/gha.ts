@@ -33,9 +33,9 @@ for (const job of jobList) {
     if (step.run) {
       console.error('');
       const proc = Deno.run({
-        cmd: ['bash', '-euxc', step.run],
-        cwd: context.rootDir, // TODO
-        // env: {}, // TODO
+        cmd: ['bash', '--noprofile', '--norc', '-euxo', 'pipefail', '-c', step.run],
+        cwd: path.resolve(step["working-directory"] || '.', context.rootDir),
+        env: { ...config.env, ...jobConfig.env, ...step.env },
       });
       const status = await proc.status();
       if (!status.success) {
@@ -77,16 +77,20 @@ async function readConfig(path: string) {
   const parsed = parseYAML(await Deno.readTextFile(path));
   return parsed as {
     'name': string;
+    'env'?: Record<string, string>;
     'jobs': Record<string, {
       'runs-on': string;
       'name': string;
       'needs'?: string;
+      'env'?: Record<string, string>;
       'if'?: string;
       'steps': Array<{
         'name': string;
         'uses'?: string;
         'with'?: Record<string, unknown>;
         'run'?: string;
+        'working-directory'?: string;
+        'env'?: Record<string, string>;
         'if'?: string;
         'id'?: string;
       }>;
