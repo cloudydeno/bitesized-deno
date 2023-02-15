@@ -1,6 +1,7 @@
 // Intended to be useful for piping together processes like in a Unix shell
 
-import { readAll, writeAll } from "https://deno.land/std@0.115.0/io/util.ts";
+import { readAll } from "https://deno.land/std@0.177.0/streams/read_all.ts";
+import { writeAll } from "https://deno.land/std@0.177.0/streams/write_all.ts";
 
 export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
   constructor(
