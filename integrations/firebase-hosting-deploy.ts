@@ -8,7 +8,7 @@
 //   https://doc.deno.land/https/danopia.net/deno/firebase-hosting-deploy@v1.ts
 
 import { gzipEncode } from "https://deno.land/x/wasm_gzip@v1.0.0/mod.ts";
-import { Sha256 } from "https://deno.land/std@0.105.0/hash/sha256.ts";
+import { toHashString } from "https://deno.land/std@0.177.0/crypto/to_hash_string.ts";
 
 export type SiteFile = {path: string, body: Uint8Array};
 export async function deployFirebaseSite(opts: {
@@ -55,7 +55,8 @@ export async function deployFirebaseSite(opts: {
   const hashMap = new Map<string,SiteFile&{compressed: Uint8Array}>();
   for (const file of opts.files) {
     const compressed = gzipEncode(file.body);
-    const hash = new Sha256().update(compressed).hex();
+    const hashBytes = await crypto.subtle.digest('SHA-256', compressed);
+    const hash = toHashString(hashBytes, 'hex');
     hashMap.set(hash, {...file, compressed});
     fileHashes[file.path] = hash;
   }

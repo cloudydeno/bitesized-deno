@@ -2,7 +2,7 @@
 // difference: uses /std/encoding for hex-decoding
 // also compacted to fit within 20k quota
 
-import { decode } from "https://deno.land/std@0.105.0/encoding/hex.ts";
+import { decode } from "https://deno.land/std@0.177.0/encoding/hex.ts";
 
 /** Hopefully a somewhat timing-attack-robust buffer equality check. */
 export function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
