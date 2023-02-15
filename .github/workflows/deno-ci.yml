@@ -58,10 +58,10 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@v2
 
-    - name: Use Deno v1.13
+    - name: Use Deno v1.30
       uses: denoland/setup-deno@v1
       with:
-        deno-version: v1.13
+        deno-version: v1.30
 
     # "https" cache: code from the Internet
     # External sources won't change much so we use less precise keys
