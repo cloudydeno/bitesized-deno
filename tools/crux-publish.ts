@@ -1,5 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read=. --allow-write=README.md --allow-net=crux.land
 import { walk } from "https://deno.land/std@0.177.0/fs/walk.ts";
+import { encode as base64Enc } from "https://deno.land/std@0.177.0/encoding/base64.ts";
 const serverOrigin = "https://crux.land";
 
 // Let the server know who we are, if we're from the Internet
@@ -30,7 +31,7 @@ for await (
   }
 
   try {
-    const data = await Deno.readTextFile(file.path);
+    const data = await Deno.readFile(file.path);
     const { id, comment } = await uploadFile(file.name, data);
     modules.push({
       path: file.path,
@@ -69,12 +70,12 @@ if (Deno.args.includes("--update-readme")) {
 // end of script :)
 
 /// Upload a text file to crux.land and return the assigned ID
-async function uploadFile(name: string, body: string) {
+async function uploadFile(name: string, body: Uint8Array) {
   const resp = await fetch(`${serverOrigin}/api/add`, {
     method: "POST",
     body: JSON.stringify({
       name: name,
-      content: btoa(body),
+      content: base64Enc(body),
     }),
     headers: {
       "user-agent": userAgent,
