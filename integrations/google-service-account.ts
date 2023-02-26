@@ -1,4 +1,4 @@
-import * as JWT from "https://deno.land/x/djwt@v2.4/mod.ts";
+import * as JWT from "https://deno.land/x/djwt@v2.8/mod.ts";
 import * as Base64 from "https://deno.land/std@0.177.0/encoding/base64.ts";
 
 export const _mockCurrentTime = Symbol();
