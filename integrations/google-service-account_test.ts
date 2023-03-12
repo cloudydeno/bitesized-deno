@@ -3,14 +3,14 @@ import {
 } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
 import {
-  ServiceAccount,
+  PrivateKeyServiceAccount,
   ServiceAccountCredential,
   _mockCurrentTime,
   _mockFetch,
 } from "./google-service-account.ts";
 
 Deno.test('Fetching an issued JWT', async () => {
-  const sa = new ServiceAccount(TestCredential);
+  const sa = new PrivateKeyServiceAccount(TestCredential);
   sa[_mockCurrentTime] = new Date(2021, 0, 1);
 
   sa[_mockFetch] = async (url, opts) => {
@@ -21,12 +21,12 @@ Deno.test('Fetching an issued JWT', async () => {
 
     return new Response('{}');
   };
-  await sa.issueToken('test-scope');
+  await sa.issueToken(['test-scope']);
 });
 
 
 Deno.test('Self-signing a JWT', async () => {
-  const sa = new ServiceAccount(TestCredential);
+  const sa = new PrivateKeyServiceAccount(TestCredential);
   sa[_mockCurrentTime] = new Date(2021, 0, 1);
 
   const jwt = await sa.selfSignToken('test-audience');
