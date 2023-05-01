@@ -14,6 +14,7 @@ Any future versions will be assigned a new URL.
 | `integrations/google-metadata-service.ts` | [https://crux.land/2EPu5b](https://crux.land/2EPu5b#google-metadata-service) |
 | `integrations/google-service-account.ts` | [https://crux.land/32WBxC](https://crux.land/32WBxC#google-service-account) |
 | `integrations/shorten-url.ts` | [https://crux.land/3BQnoi](https://crux.land/3BQnoi#shorten-url) |
+| `kv/oidc-issuer.ts` | [https://crux.land/7Em466](https://crux.land/7Em466#oidc-issuer) |
 | `logic/async-cache.ts` | [https://crux.land/67XrpW](https://crux.land/67XrpW#async-cache) |
 | `logic/combine-iterators.ts` | [https://crux.land/7Ed9a6](https://crux.land/7Ed9a6#combine-iterators) |
 | `logic/factory-map.ts` | [https://crux.land/4x3qJT](https://crux.land/4x3qJT#factory-map) |
