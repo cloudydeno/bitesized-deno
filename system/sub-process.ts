@@ -1,8 +1,5 @@
 // Intended to be useful for piping together processes like in a Unix shell
 
-import { readAll } from "https://deno.land/std@0.177.0/streams/read_all.ts";
-import { writeAll } from "https://deno.land/std@0.177.0/streams/write_all.ts";
-
 export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
   constructor(
     public label: string,
@@ -15,21 +12,23 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
     },
   ) {
     try {
-      this.proc = Deno.run({
+      this.proc = new Deno.Command(opts.cmd[0], {
+        args: opts.cmd.slice(1),
         stdout: 'piped',
         stderr: 'piped',
         ...this.opts,
-      });
+      }).spawn();
     } catch (error) {
       throw attachErrorData(error, this, -1,
         `Child process failed to launch: ${error.message}`);
     }
 
-    this.#stdin = this.proc.stdin;
-    this.#stderrText = readAll(this.proc.stderr)
+    this.#stdin = opts.stdin == 'piped' ? this.proc.stdin : null;
+    this.#stderrText = new Response(this.proc.stderr)
+      .text()
       .then(raw => {
         if (raw.length == 0) return [];
-        const lines = new TextDecoder().decode(raw).split('\n');
+        const lines = raw.split('\n');
         if (lines[lines.length - 1] == '') lines.pop();
         for (const line of lines) {
           console.log(`${this.label}: ${line}`);
@@ -37,14 +36,14 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
         return lines;
       });
   }
-  proc: Deno.Process<{ cmd: string[]; stdin: Tstdin; stdout: "piped"; stderr: "piped"; }>;
-  #stdin: (Deno.Writer & Deno.Closer) | null;
+  proc: Deno.ChildProcess;
+  #stdin: WritableStream<Uint8Array> | null;
   #stderrText: Promise<string[]>;
 
   async status() {
     const [stderr, status] = await Promise.all([
       this.#stderrText,
-      this.proc.status(),
+      this.proc.status,
     ]);
     if (status.code !== 0) {
       const errorText = stderr.find(x => x.match(this.opts.errorPrefix));
@@ -59,26 +58,24 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
     if (!stdin) throw new Error(`This process isn't writable`);
     this.#stdin = null;
 
-    const bytes = new TextEncoder().encode(text);
-    await writeAll(stdin, bytes);
-    stdin.close();
+    const writer = stdin.getWriter();
+    await writer.write(new TextEncoder().encode(text));
+    await writer.close();
   }
   async pipeInputFrom(source: SubProcess) {
     const stdin = this.#stdin;
     if (!stdin) throw new Error(`This process isn't writable`);
     this.#stdin = null;
 
-    const bytes = await Deno.copy(source.proc.stdout, stdin);
-    stdin.close();
+    await source.proc.stdout.pipeTo(stdin);
     return {
-      pipedBytes: bytes,
       stderr: await this.status(),
     };
   }
 
   async captureAllOutput() {
     const [data] = await Promise.all([
-      readAll(this.proc.stdout),
+      new Response(this.proc.stdout).arrayBuffer(),
       this.status(),
     ]);
     return data;
