@@ -2,10 +2,10 @@
 // Looks up a specific Github Actions job for the current repository
 // and tries runs the same commands locally.
 
-import { parse as parseYAML } from "https://deno.land/std@0.177.0/encoding/yaml.ts";
-import * as path from "https://deno.land/std@0.177.0/path/mod.ts";
+import { parse as parseYAML } from "https://deno.land/std@0.224.0/yaml/mod.ts";
+import * as path from "https://deno.land/std@0.224.0/path/mod.ts";
 
-const context = findFsContext();
+const context = await findFsContext();
 
 const configFile = context.workflows.find(x => x.includes('ci'));
 if (!configFile) throw die
@@ -32,12 +32,14 @@ for (const job of jobList) {
 
     if (step.run) {
       console.error('');
-      const proc = Deno.run({
-        cmd: ['bash', '--noprofile', '--norc', '-euxo', 'pipefail', '-c', step.run],
-        cwd: path.resolve(step["working-directory"] || '.', context.rootDir),
+      const status = await new Deno.Command('bash', {
+        args: ['--noprofile', '--norc', '-euxo', 'pipefail', '-c', step.run],
+        cwd: path.resolve(context.rootDir, step["working-directory"] || '.'),
         env: { ...config.env, ...jobConfig.env, ...step.env },
-      });
-      const status = await proc.status();
+        stdin: 'null',
+        stdout: 'inherit',
+        stderr: 'inherit',
+      }).output();
       if (!status.success) {
         console.error(`Exit code:`, status.code);
         success = false;
@@ -52,16 +54,19 @@ for (const job of jobList) {
 }
 console.log('✅', 'All jobs completed successfully.\n');
 
-function findFsContext() {
-  const cleanTail = (x: string) => x.endsWith(path.sep) ? x.slice(0, -path.sep.length) : x;
+async function findFsContext() {
+  const cleanTail = (x: string) =>
+    x.endsWith(path.SEPARATOR)
+      ? x.slice(0, -path.SEPARATOR.length)
+      : x;
   // always stop before the homedir if we know one
   const defaultTop = cleanTail(Deno.env.get('HOME') ?? path.parse(Deno.cwd()).root);
   let current = cleanTail(Deno.cwd());
   while (current != defaultTop) {
     const ghaDir = path.join(current, '.github', 'workflows');
     try {
-      const items = Deno.readDirSync(ghaDir);
-      const workflows = Array.from(items).filter(x => x.isFile).map(x => x.name);
+      const items = await Array.fromAsync(Deno.readDir(ghaDir));
+      const workflows = items.filter(x => x.isFile).map(x => x.name);
       return { rootDir: current, ghaDir, workflows };
     } catch (err: unknown) {
       if (!(err instanceof Deno.errors.NotFound)) throw err;
