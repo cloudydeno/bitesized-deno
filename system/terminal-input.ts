@@ -1,4 +1,4 @@
-const { stdin, isatty } = Deno;
+const { stdin } = Deno;
 const LF = "\n".charCodeAt(0);
 const CR = "\r".charCodeAt(0);
 const decoder = new TextDecoder();
@@ -37,7 +37,7 @@ export function readLineFromStdinSync() {
 export function prompt(message: string, defaultValue: string): string;
 export function prompt(message: string): string | null;
 export function prompt(message: string, defaultValue?: string) {
-  if (!isatty(stdin.rid)) {
+  if (!stdin.isTerminal()) {
     return null;
   }
 
