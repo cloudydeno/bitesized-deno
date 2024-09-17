@@ -54,7 +54,11 @@ for (const job of jobList) {
 }
 console.log('✅', 'All jobs completed successfully.\n');
 
-async function findFsContext() {
+async function findFsContext(): Promise<{
+  rootDir: string;
+  ghaDir: string;
+  workflows: string[];
+}> {
   const cleanTail = (x: string) =>
     x.endsWith(path.SEPARATOR)
       ? x.slice(0, -path.SEPARATOR.length)
