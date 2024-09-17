@@ -21,8 +21,8 @@ export async function shortenUrl(url: string, dagdBaseUrl = 'https://da.gd') {
 
     return text.trim();
 
-  } catch (err) {
-    console.error('WARN: could not shorten URL', url, '-', err.message ?? err);
+  } catch (err: unknown) {
+    console.error('WARN: could not shorten URL', url, '-', (err as Error).message ?? err);
     return url;
   }
 };

@@ -18,9 +18,9 @@ export class SubProcess<Tstdin extends 'piped' | 'null' = 'piped' | 'null'> {
         stderr: 'piped',
         ...this.opts,
       }).spawn();
-    } catch (error) {
+    } catch (error: unknown) {
       throw attachErrorData(error, this, -1,
-        `Child process failed to launch: ${error.message}`);
+        `Child process failed to launch: ${(error as Error).message}`);
     }
 
     this.#stdin = opts.stdin == 'piped' ? this.proc.stdin : null;
