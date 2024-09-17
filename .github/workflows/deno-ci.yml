@@ -52,6 +52,8 @@ jobs:
     needs: check
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: Upload modules
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout source
