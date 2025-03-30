@@ -27,3 +27,9 @@ Any future versions will be assigned a new URL.
 | `tools/gha.ts` | [https://crux.land/37p4G7](https://crux.land/37p4G7#gha) |
 
 The above table is automatically updated by Github Actions after typechecking passes with multiple Deno releases.
+
+## Tools install
+
+```shell
+deno install --global tools/gha.ts --allow-read --allow-run --allow-env
+```
