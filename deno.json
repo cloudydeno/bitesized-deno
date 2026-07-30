@@ -29,7 +29,7 @@
     "./tools/update-jsr": "./tools/update-jsr.ts"
   },
   "imports": {
-    "@cloudydeno/opentelemetry": "jsr:@cloudydeno/opentelemetry@^0.11",
+    "@cloudydeno/opentelemetry": "jsr:@cloudydeno/opentelemetry@^0.11.1",
     "@std/assert": "jsr:@std/assert@^1.0.19",
     "@std/encoding": "jsr:@std/encoding@^1.0.11",
     "@std/path": "jsr:@std/path@^1.1.6",
